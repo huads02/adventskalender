@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Adventskalender</title>
+  <style>
+    /* ---- Grundlayout ---- */
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #b22222, #660000);
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(6, 100px);
+      grid-gap: 15px;
+      padding: 20px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    .door {
+      background: #fff;
+      color: #b22222;
+      font-weight: bold;
+      font-size: 22px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      border-radius: 12px;
+      transition: transform 0.2s, background 0.2s;
+      user-select: none;
+    }
+    .door:hover {
+      transform: scale(1.05);
+      background: #f2f2f2;
+    }
+    .door.locked {
+      background: #888;
+      color: #444;
+      cursor: not-allowed;
+    }
+
+    /* ---- Popup ---- */
+    .popup {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+    .popup-content {
+      background: #fff;
+      color: #333;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 500px;
+      text-align: center;
+      position: relative;
+    }
+    .popup h2 {
+      margin-top: 0;
+      color: #b22222;
+    }
+    .close-btn {
+      position: absolute;
+      top: 10px; right: 15px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="calendar" id="calendar"></div>
+
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <span class="close-btn" id="close">&times;</span>
+      <h2 id="popup-title"></h2>
+      <p id="popup-text"></p>
+    </div>
+  </div>
+
+  <script>
+    // ---- Inhalte hinter den Türchen ----
+    const doors = [
+      { title: "1. Dezember", text: "🎁 Gutschein für Frühstück im Bett" },
+      { title: "2. Dezember", text: "💌 Liebesbrief" },
+      { title: "3. Dezember", text: "🎬 Gemeinsamer Filmabend" },
+      { title: "4. Dezember", text: "🍫 Deine Lieblingsschokolade wartet" },
+      { title: "5. Dezember", text: "💆 Massage-Gutschein" },
+      { title: "6. Dezember", text: "🎅 Nikolaus-Überraschung" },
+      // … bis 24 weiter ausfüllen
+    ];
+
+    const calendar = document.getElementById("calendar");
+    const today = new Date().getDate(); // aktuelles Tagesdatum (für Locking)
+
+    for (let i = 1; i <= 24; i++) {
+      const door = document.createElement("div");
+      door.classList.add("door");
+      if (i > today) door.classList.add("locked"); // nur bis heute öffnen
+      door.textContent = i;
+
+      door.addEventListener("click", () => {
+        if (door.classList.contains("locked")) return;
+        const entry = doors[i-1];
+        if (entry) {
+          document.getElementById("popup-title").innerText = entry.title;
+          document.getElementById("popup-text").innerText = entry.text;
+          document.getElementById("popup").style.display = "flex";
+        }
+      });
+
+      calendar.appendChild(door);
+    }
+
+    document.getElementById("close").addEventListener("click", () => {
+      document.getElementById("popup").style.display = "none";
+    });
+  </script>
+</body>
+</html>
