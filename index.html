@@ -4,10 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adventskalender 2025</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(to bottom, #b22222, #660000);
+            color: #fff;
+        }
+        #login-box, #calendar {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0,0,0,0.4);
+        }
+        input[type=password] {
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            width: 200px;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            background: #fff;
+            color: #b22222;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #f2f2f2;
+        }
+        #calendar {
+            display: none; /* versteckt bis Login erfolgreich */
+        }
+    </style>
 </head>
 <body>
-    <h1>Adventskalender 2025</h1>
-    <h2>Für Laura</h2>
-    
+
+    <!-- Login-Box -->
+    <div id="login-box">
+        <h1>Adventskalender 2025</h1>
+        <h2>Für Laura 💖</h2>
+        <p>Bitte Passwort eingeben:</p>
+        <input type="password" id="password" placeholder="Passwort">
+        <br>
+        <button onclick="checkLogin()">Login</button>
+        <p id="error" style="color: pink;"></p>
+    </div>
+
+    <!-- Kalender-Bereich -->
+    <div id="calendar">
+        <h1>🎄 Willkommen, Laura! 🎄</h1>
+        <p>Hier erscheint dann dein Adventskalender.</p>
+    </div>
+
+    <script>
+        function checkLogin() {
+            const pw = document.getElementById("password").value;
+            const error = document.getElementById("error");
+
+            // Einfaches Passwort (kannst du ändern)
+            const correctPassword = "weihnachten2025";
+
+            if (pw === correctPassword) {
+                document.getElementById("login-box").style.display = "none";
+                document.getElementById("calendar").style.display = "block";
+            } else {
+                error.innerText = "❌ Falsches Passwort!";
+            }
+        }
+    </script>
+
 </body>
 </html>
