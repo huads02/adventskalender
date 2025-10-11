@@ -7,48 +7,118 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
             background: linear-gradient(to bottom, #b22222, #660000);
             color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
+
+        /* Zentrierte Box */
         #login-box, #calendar {
             background: rgba(255, 255, 255, 0.1);
             padding: 30px;
-            border-radius: 12px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+            max-width: 95%;
             text-align: center;
-            box-shadow: 0 0 15px rgba(0,0,0,0.4);
         }
+
+        /* Eingabefelder */
         input[type=password] {
-            padding: 10px;
+            padding: 12px;
             border-radius: 6px;
             border: none;
-            width: 200px;
+            width: 80%;
+            max-width: 250px;
             margin: 10px 0;
         }
         button {
-            padding: 10px 20px;
+            padding: 12px 25px;
             border: none;
             border-radius: 6px;
             background: #fff;
             color: #b22222;
             font-weight: bold;
             cursor: pointer;
+            margin-top: 10px;
         }
         button:hover {
             background: #f2f2f2;
         }
-        #calendar {
-            display: none; /* versteckt bis Login erfolgreich */
+        #error {
+            margin-top: 10px;
+            color: pink;
+        }
+
+        /* Kalender-Grid */
+        .grid {
+            margin-top: 20px;
+            display: grid;
+            gap: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        }
+        .door {
+            background: #fff;
+            color: #b22222;
+            font-weight: bold;
+            font-size: 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            user-select: none;
+        }
+        .door:hover {
+            transform: scale(1.05);
+            background: #f2f2f2;
+        }
+        .locked {
+            background: #888;
+            color: #444;
+            cursor: not-allowed;
+        }
+
+        /* Popup */
+        .popup {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        .popup-content {
+            background: #fff;
+            color: #333;
+            padding: 25px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+        }
+        .popup h2 {
+            margin-top: 0;
+            color: #b22222;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px; right: 15px;
+            font-size: 24px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-    <!-- Login-Box -->
+    <!-- Login -->
     <div id="login-box">
         <h1>Adventskalender 2025</h1>
         <h2>Für Laura 💖</h2>
@@ -56,22 +126,31 @@
         <input type="password" id="password" placeholder="Passwort">
         <br>
         <button onclick="checkLogin()">Login</button>
-        <p id="error" style="color: pink;"></p>
+        <p id="error"></p>
     </div>
 
-    <!-- Kalender-Bereich -->
-    <div id="calendar">
+    <!-- Kalender -->
+    <div id="calendar" style="display:none;">
         <h1>🎄 Willkommen, Laura! 🎄</h1>
-        <p>Hier erscheint dann dein Adventskalender.</p>
+        <p>Öffne jeden Tag ein Türchen:</p>
+        <div class="grid" id="calendar-grid"></div>
+    </div>
+
+    <!-- Popup -->
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            <span class="close-btn" id="close">&times;</span>
+            <h2 id="popup-title"></h2>
+            <p id="popup-text"></p>
+        </div>
     </div>
 
     <script>
+        // Passwort-Schutz
         function checkLogin() {
             const pw = document.getElementById("password").value;
             const error = document.getElementById("error");
-
-            // Einfaches Passwort (kannst du ändern)
-            const correctPassword = "weihnachten2025";
+            const correctPassword = "weihnachten2025"; // <<< Passwort anpassen
 
             if (pw === correctPassword) {
                 document.getElementById("login-box").style.display = "none";
@@ -80,6 +159,63 @@
                 error.innerText = "❌ Falsches Passwort!";
             }
         }
+
+        // Türchen-Inhalte
+        const doors = [
+            { title: "1. Dezember", text: "🎁 Frühstück im Bett" },
+            { title: "2. Dezember", text: "💌 Liebesbrief" },
+            { title: "3. Dezember", text: "🎬 Filmabend" },
+            { title: "4. Dezember", text: "🍫 Schokolade" },
+            { title: "5. Dezember", text: "💆 Massage" },
+            { title: "6. Dezember", text: "🎅 Nikolaus-Überraschung" },
+            { title: "7. Dezember", text: "🕯️ Kerzenabend" },
+            { title: "8. Dezember", text: "☕ Kaffee-Date" },
+            { title: "9. Dezember", text: "🎶 Lieblingslied von mir" },
+            { title: "10. Dezember", text: "🍷 Weinabend" },
+            { title: "11. Dezember", text: "🌌 Spaziergang unterm Sternenhimmel" },
+            { title: "12. Dezember", text: "📖 Ich lese dir was vor" },
+            { title: "13. Dezember", text: "🎨 Kreativabend" },
+            { title: "14. Dezember", text: "🍰 Kuchenbacken zusammen" },
+            { title: "15. Dezember", text: "🧸 Dein Kuscheltag" },
+            { title: "16. Dezember", text: "📸 Foto-Erinnerungstag" },
+            { title: "17. Dezember", text: "🎵 Musikabend" },
+            { title: "18. Dezember", text: "🚗 Ausflug ins Blaue" },
+            { title: "19. Dezember", text: "🛁 Wellness-Abend" },
+            { title: "20. Dezember", text: "💃 Tanzabend" },
+            { title: "21. Dezember", text: "🏞️ Spaziergang am See" },
+            { title: "22. Dezember", text: "🍴 Dein Lieblingsessen" },
+            { title: "23. Dezember", text: "🌠 Wunschabend" },
+            { title: "24. Dezember", text: "🎄 Frohe Weihnachten – große Überraschung!" }
+        ];
+
+        const today = new Date().getDate(); // heutiger Tag
+        const grid = document.getElementById("calendar-grid");
+
+        // Türen erzeugen
+        for (let i = 1; i <= 24; i++) {
+            const door = document.createElement("div");
+            door.classList.add("door");
+            door.textContent = i;
+
+            if (i > today) door.classList.add("locked");
+
+            door.addEventListener("click", () => {
+                if (door.classList.contains("locked")) return;
+                const entry = doors[i - 1];
+                if (entry) {
+                    document.getElementById("popup-title").innerText = entry.title;
+                    document.getElementById("popup-text").innerText = entry.text;
+                    document.getElementById("popup").style.display = "flex";
+                }
+            });
+
+            grid.appendChild(door);
+        }
+
+        // Popup schließen
+        document.getElementById("close").addEventListener("click", () => {
+            document.getElementById("popup").style.display = "none";
+        });
     </script>
 
 </body>
