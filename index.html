@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,11 +18,12 @@
         }
 
         /* Zentrierte Box */
-        #login-box, #calendar {
+        #login-box,
+        #calendar {
             background: rgba(255, 255, 255, 0.1);
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
             max-width: 95%;
             text-align: center;
         }
@@ -35,6 +37,7 @@
             max-width: 250px;
             margin: 10px 0;
         }
+
         button {
             padding: 12px 25px;
             border: none;
@@ -45,9 +48,11 @@
             cursor: pointer;
             margin-top: 10px;
         }
+
         button:hover {
             background: #f2f2f2;
         }
+
         #error {
             margin-top: 10px;
             color: pink;
@@ -60,6 +65,7 @@
             gap: 10px;
             grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
         }
+
         .door {
             background: #fff;
             color: #b22222;
@@ -74,10 +80,12 @@
             transition: transform 0.2s, background 0.2s;
             user-select: none;
         }
+
         .door:hover {
             transform: scale(1.05);
             background: #f2f2f2;
         }
+
         .locked {
             background: #888;
             color: #444;
@@ -87,13 +95,16 @@
         /* Popup */
         .popup {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
             display: none;
             justify-content: center;
             align-items: center;
         }
+
         .popup-content {
             background: #fff;
             color: #333;
@@ -104,18 +115,22 @@
             text-align: center;
             position: relative;
         }
+
         .popup h2 {
             margin-top: 0;
             color: #b22222;
         }
+
         .close-btn {
             position: absolute;
-            top: 10px; right: 15px;
+            top: 10px;
+            right: 15px;
             font-size: 24px;
             cursor: pointer;
         }
     </style>
 </head>
+
 <body>
 
     <!-- Login -->
@@ -162,7 +177,7 @@
 
         // Türchen-Inhalte
         const doors = [
-            { title: "1. Dezember", text: "💆 Massage-Gutschein <br><a href='pdf/datei.pdf' target='_blank'>➡️ Gutschein öffnen</a>"  },
+            { title: "1. Dezember", text: "💆 Massage-Gutschein <a href='pdf/datei.pdf' target='_blank'>➡️ Gutschein öffnen</a>" },
             { title: "2. Dezember", text: "💌 Liebesbrief" },
             { title: "3. Dezember", text: "🎬 Filmabend" },
             { title: "4. Dezember", text: "🍫 Schokolade" },
@@ -210,7 +225,7 @@
                 const entry = doors[i - 1];
                 if (entry) {
                     document.getElementById("popup-title").innerText = entry.title;
-                    document.getElementById("popup-text").innerText = entry.text;
+                    document.getElementById("popup-text").innerHTML = entry.text;
                     document.getElementById("popup").style.display = "flex";
                 }
             });
@@ -225,7 +240,7 @@
     </script>
 
 </body>
-</html>
 
+</html>
 
 
