@@ -203,13 +203,15 @@
             { title: "24. Dezember", text: "🎄 Frohe Weihnachten – große Überraschung!" }
         ];
 
-        /* Mit diesem Code ist der Kalender nur im Dezember verfügbar
+        /*Mit diesem Code ist der Kalender nur im Dezember Verfügbar*/
         const now = new Date();
         const isDecember = now.getMonth() === 11 && now.getFullYear() == 2025;    // Prüfen obs Dezember 2025 ist
         const today = isDecember ? now.getDate() : 0; // Wenn der aktuelle Tag im Dezember 2025 ist, sonst alles gespert
-        */
+        
+        /*Mit diesem Code ist der Kalender immer Verfügbar*/
+        /*const today = new Date().getDate(); // heutiger Tag*/
 
-        const today = new Date().getDate(); // heutiger Tag
+        
         const grid = document.getElementById("calendar-grid");
 
         // Türen erzeugen
@@ -242,6 +244,7 @@
 </body>
 
 </html>
+
 
 
 
