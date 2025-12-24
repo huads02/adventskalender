@@ -160,6 +160,23 @@
         </div>
     </div>
 
+    <!-- Code-Popup für Türchen 24 -->
+<div class="popup" id="code-popup">
+    <div class="popup-content">
+        <span class="close-btn" id="code-close">&times;</span>
+        <h2>🔐 Zahlencode erforderlich</h2>
+        <p>Bitte gib den Code ein:</p>
+
+        <input type="password" id="code-input" placeholder="Code" 
+               style="font-size:20px; text-align:center; letter-spacing:5px;">
+
+        <br><br>
+        <button onclick="checkCode()">OK</button>
+
+        <p id="code-error" style="color:red;"></p>
+    </div>
+</div>
+
     <script>
         // Passwort-Schutz
         function checkLogin() {
@@ -223,14 +240,25 @@
             if (i > today) door.classList.add("locked");
 
             door.addEventListener("click", () => {
-                if (door.classList.contains("locked")) return;
-                const entry = doors[i - 1];
-                if (entry) {
-                    document.getElementById("popup-title").innerText = entry.title;
-                    document.getElementById("popup-text").innerHTML = entry.text;
-                    document.getElementById("popup").style.display = "flex";
-                }
-            });
+    if (door.classList.contains("locked")) return;
+
+    // Türchen 24 → Code-Abfrage
+    if (i === 24) {
+        pendingDoor = doors[23];
+        document.getElementById("code-input").value = "";
+        document.getElementById("code-error").innerText = "";
+        document.getElementById("code-popup").style.display = "flex";
+        return;
+    }
+
+    // Normale Türchen
+    const entry = doors[i - 1];
+    if (entry) {
+        document.getElementById("popup-title").innerText = entry.title;
+        document.getElementById("popup-text").innerHTML = entry.text;
+        document.getElementById("popup").style.display = "flex";
+    }
+});
 
             grid.appendChild(door);
         }
@@ -239,11 +267,34 @@
         document.getElementById("close").addEventListener("click", () => {
             document.getElementById("popup").style.display = "none";
         });
+
+        const door24Code = "2412"; // <<< HIER deinen Code festlegen
+        let pendingDoor = null;
+
+
+        function checkCode() {
+    const input = document.getElementById("code-input").value;
+
+    if (input === door24Code) {
+        document.getElementById("code-popup").style.display = "none";
+        document.getElementById("popup-title").innerText = pendingDoor.title;
+        document.getElementById("popup-text").innerHTML = pendingDoor.text;
+        document.getElementById("popup").style.display = "flex";
+    } else {
+        document.getElementById("code-error").innerText = "❌ Falscher Code";
+    }
+}
+
+// Code-Popup schliessen
+document.getElementById("code-close").addEventListener("click", () => {
+    document.getElementById("code-popup").style.display = "none";
+});
     </script>
 
 </body>
 
 </html>
+
 
 
 
