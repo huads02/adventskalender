@@ -220,13 +220,13 @@
             { title: "24. Dezember", text: "🎄Frohe Weihnachten <a href='Yogaloft_gutschein.png' target='_blank'>➡️ öffnen</a>    Da Heiligabend ist, gleich noch was zweites <a href='Ballett_Gutschein.png' target='_blank'>➡️ öffnen</a>" }
         ];
 
-        /*Mit diesem Code ist der Kalender nur im Dezember */
+        /*Mit diesem Code ist der Kalender nur im Dezember 
         const now = new Date();
         const isDecember = now.getMonth() === 11 && now.getFullYear() == 2025;    // Prüfen obs Dezember 2025 ist
-        const today = isDecember ? now.getDate() : 0; // Wenn der aktuelle Tag im Dezember 2025 ist, sonst alles gespert
+        const today = isDecember ? now.getDate() : 0; // Wenn der aktuelle Tag im Dezember 2025 ist, sonst alles gespert*/
 
-        /*Mit diesem Code ist der Kalender immer Verfügbar
-        const today = 4; // heutiger Tag*/
+        /*Mit diesem Code ist der Kalender immer Verfügbar*/
+        const today = 4; // heutiger Tag
 
 
         const grid = document.getElementById("calendar-grid");
@@ -294,6 +294,7 @@ document.getElementById("code-close").addEventListener("click", () => {
 </body>
 
 </html>
+
 
 
 
